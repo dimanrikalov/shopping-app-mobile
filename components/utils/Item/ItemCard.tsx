@@ -57,34 +57,61 @@ export const ItemCard = ({
             {collectionName === COLLECTIONS.BOUGHT_PRODUCTS && (
                 <View style={styles.crossLine}></View>
             )}
-            <View style={styles.leftSide}>
+            <View
+                style={[
+                    styles.leftSide,
+                    collectionName === COLLECTIONS.PRODUCTS_TO_BE_ADDED &&
+                        styles.addToCardStyle
+                ]}>
                 {collectionName !== COLLECTIONS.PRODUCTS_TO_BE_ADDED && (
                     <CheckBox
+                        tintColors={{true: '#4F8EF7', false: 'fff'}}
                         value={checkValue}
                         onValueChange={checkboxHandler}
                         id={`${productData.name}-${productData.quantity}-${productData.price}-${id}`}
                     />
                 )}
-                <MyText style={styles.textStyle}>{productData.name}</MyText>
-                <MyText style={styles.textStyle}>
+                <MyText
+                    style={[
+                        styles.textStyle,
+                        shouldEdit && styles.shouldEditStyle
+                    ]}>
+                    {productData.name}
+                </MyText>
+                <MyText
+                    style={[
+                        styles.textStyle,
+                        shouldEdit && styles.shouldEditStyle
+                    ]}>
                     Qty: {productData.quantity}
                 </MyText>
-                <MyText style={styles.textStyle}>${productData.price}</MyText>
+                <MyText
+                    style={[
+                        styles.textStyle,
+                        shouldEdit && styles.shouldEditStyle
+                    ]}>
+                    ${productData.price}
+                </MyText>
             </View>
-            {shouldEdit && (
-                <View style={styles.rightSide}>
-                    <Pressable onPress={changeMode}>
-                        <FontAwesome name="edit" size={24} color="#4F8EF7" />
-                    </Pressable>
-                    <Pressable onPress={onDeleteHandler}>
-                        <MaterialCommunityIcons
-                            name="delete"
-                            size={24}
-                            color="#4F8EF7"
-                        />
-                    </Pressable>
-                </View>
-            )}
+            {shouldEdit &&
+                collectionName !== COLLECTIONS.PRODUCTS_TO_BE_ADDED && (
+                    <View style={styles.rightSide}>
+                        <Pressable onPress={changeMode}>
+                            <FontAwesome
+                                name="edit"
+                                size={24}
+                                color="#4F8EF7"
+                            />
+                        </Pressable>
+                        <Pressable onPress={onDeleteHandler}>
+                            <MaterialCommunityIcons
+                                name="delete"
+                                size={24}
+                                color="#4F8EF7"
+                            />
+                        </Pressable>
+                    </View>
+                )}
         </View>
     );
 };
@@ -106,8 +133,14 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         fontSize: 16,
-        textAlign: 'center',
+        textAlign: 'center'
+    },
+    shouldEditStyle: {
         maxWidth: 90
+    },
+    addToCardStyle: {
+        width: '100%',
+        justifyContent: 'space-evenly'
     },
     leftSide: {
         display: 'flex',

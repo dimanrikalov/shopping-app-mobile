@@ -1,12 +1,16 @@
+import {
+    COLLECTIONS,
+    useDeleteAllMutation,
+    useMoveAllMutation
+} from '../../app/productsApi';
+import {toggle} from '../../app/editModeSlice';
+import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {Pressable, StyleSheet, View} from 'react-native';
 import IonIcons from 'react-native-vector-icons/Ionicons';
+import {Alert, Pressable, StyleSheet, View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {HeaderButtonProps} from '@react-navigation/native-stack/lib/typescript/src/types';
-import {useDispatch, useSelector} from 'react-redux';
-import {toggle} from '../../app/editModeSlice';
 
 export const HomeHeaderRight = () => {
     const navigation = useNavigation();
@@ -27,9 +31,43 @@ export const HomeHeaderRight = () => {
 
 export const AddProductsHeaderRight = () => {
     const navigation = useNavigation();
+
+    const [moveAll] = useMoveAllMutation();
+    const [deleteAll] = useDeleteAllMutation();
+
+    const addToBuyList = () => {
+        moveAll({
+            srcCollection: COLLECTIONS.PRODUCTS_TO_BE_ADDED,
+            destCollection: COLLECTIONS.PRODUCTS_TO_BUY
+        }).then(() => {
+            navigation.navigate('Home');
+        });
+    };
+
+    const discardItems = () => {
+        Alert.alert(
+            'Are you sure?',
+            'Are you sure you want to discard all items?',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => {},
+                    style: 'cancel'
+                },
+                {
+                    text: 'OK',
+                    onPress: () => deleteAll(COLLECTIONS.PRODUCTS_TO_BE_ADDED)
+                }
+            ]
+        );
+    };
+
     return (
         <View style={styles.headerContainer}>
-            <Pressable>
+            <Pressable onPress={addToBuyList}>
+                <FontAwesome6 name="circle-plus" size={20} color="#4F8EF7" />
+            </Pressable>
+            <Pressable onPress={discardItems}>
                 <MaterialCommunityIcons
                     name="delete"
                     size={24}
@@ -47,6 +85,7 @@ const styles = StyleSheet.create({
     headerContainer: {
         display: 'flex',
         flexDirection: 'row',
+        alignItems: 'center',
         gap: 16
     }
 });

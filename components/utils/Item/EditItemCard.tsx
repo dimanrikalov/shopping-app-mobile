@@ -1,7 +1,8 @@
 import {Input, InputTypes, Type} from '../Input';
-import {Pressable, StyleSheet} from 'react-native';
+import {Pressable, StyleSheet, View} from 'react-native';
 import {IProductData, PRODUCT_DATA_KEYS} from './ItemCard';
 import {COLLECTIONS, useEditProductMutation} from '../../../app/productsApi';
+import {MyText} from '../MyText';
 
 interface IEditItemBody {
     id: string;
@@ -20,10 +21,8 @@ export const EditItemCard = ({
 }: IEditItemBody) => {
     const [editProduct] = useEditProductMutation();
 
-    const onEditHandler = async (e: React.FormEvent) => {
-        e.preventDefault();
-
-        await editProduct({
+    const onEditHandler = () => {
+        editProduct({
             collectionName,
             id,
             data: {
@@ -31,31 +30,26 @@ export const EditItemCard = ({
                 price: Number(inputValues.price),
                 quantity: Number(inputValues.quantity)
             }
-        });
-
-        setIsInEditMode(false);
+        }).then(() => setIsInEditMode(false));
     };
 
-    const setInput = (e: React.BaseSyntheticEvent, key: PRODUCT_DATA_KEYS) => {
+    const setInput = (textValue: string, key: PRODUCT_DATA_KEYS) => {
         setInputValues(prev => ({
             ...prev,
-            [key]: e.target.value
+            [key]: textValue
         }));
     };
 
     return (
-        <div style={styles.cardBackground}>
-            {collectionName === COLLECTIONS.BOUGHT_PRODUCTS && (
-                <div style={styles.crossLine}></div>
-            )}
-            <form style={styles.editContainer} onSubmit={onEditHandler}>
+        <View style={styles.cardBackground}>
+            <View style={styles.editContainer}>
                 <Input
                     type={Type.TEXT}
                     placeholder="Watermelon"
                     value={inputValues.name}
                     elementId={InputTypes.NAME_INPUT}
-                    setInputs={(e: React.BaseSyntheticEvent) =>
-                        setInput(e, PRODUCT_DATA_KEYS.NAME)
+                    setInputs={textValue =>
+                        setInput(textValue, PRODUCT_DATA_KEYS.NAME)
                     }
                 />
                 <Input
@@ -63,8 +57,8 @@ export const EditItemCard = ({
                     placeholder="Quantity"
                     value={inputValues.quantity}
                     elementId={InputTypes.QUANTITY_INPUT}
-                    setInputs={(e: React.BaseSyntheticEvent) =>
-                        setInput(e, PRODUCT_DATA_KEYS.QUANTITY)
+                    setInputs={textValue =>
+                        setInput(textValue, PRODUCT_DATA_KEYS.QUANTITY)
                     }
                 />
                 <Input
@@ -72,18 +66,36 @@ export const EditItemCard = ({
                     placeholder="Price"
                     value={inputValues.price}
                     elementId={InputTypes.PRICE_INPUT}
-                    setInputs={(e: React.BaseSyntheticEvent) =>
-                        setInput(e, PRODUCT_DATA_KEYS.PRICE)
+                    setInputs={textValue =>
+                        setInput(textValue, PRODUCT_DATA_KEYS.PRICE)
                     }
                 />
-                <Pressable>Edit</Pressable>
-            </form>
-        </div>
+                <Pressable style={styles.button} onPress={onEditHandler}>
+                    <MyText style={styles.buttonText}>Edit</MyText>
+                </Pressable>
+            </View>
+        </View>
     );
 };
 
 const styles = StyleSheet.create({
-    cardBackground: {},
-    crossLine: {},
-    editContainer: {}
+    cardBackground: {
+        borderWidth: 1,
+        borderColor: 'darkgrey',
+        padding: 12,
+        borderRadius: 12
+    },
+    editContainer: {
+        display: 'flex',
+        gap: 12
+    },
+    button: {
+        backgroundColor: '#4F8EF7',
+        borderRadius: 6,
+        padding: 9
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: 'white'
+    }
 });

@@ -28,30 +28,22 @@ export const Item = ({
     });
 
     const onDeleteHandler = () => {
-        let hasConfirmed;
         Alert.alert(
             'Are you sure?',
-            `Are you sure you want to delete "${name}" from the list?`,
+            `Are you sure you want to delete "${name}" from the "To buy list"?`,
             [
                 {
                     text: 'Yes',
                     onPress: () => {
-                        hasConfirmed = true;
+                        deleteProduct({collectionName, id});
                     }
                 },
                 {
-                    text: 'No',
-                    onPress: () => {
-                        hasConfirmed = false;
-                    }
+                    text: 'Cancel',
+                    onPress: () => {}
                 }
             ]
         );
-
-        if (!hasConfirmed) {
-            return;
-        }
-        deleteProduct({collectionName, id});
     };
 
     const changeMode = () => {
