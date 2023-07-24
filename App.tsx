@@ -1,3 +1,7 @@
+import {
+    AddProductsHeaderRight,
+    HomeHeaderRight
+} from './components/utils/PressableIcon';
 import {store} from './app/store';
 import {Provider} from 'react-redux';
 import {Home} from './components/Home/Home';
@@ -5,11 +9,6 @@ import {NavigationContainer} from '@react-navigation/native';
 import {AddProducts} from './components/AddProducts/AddProducts';
 import {CreateProduct} from './components/CreateProduct/CreateProduct';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {
-    AddProductsHeaderRight,
-    HomeHeaderRight,
-    PressableIcon
-} from './components/utils/PressableIcon';
 
 export type RootStackParamList = {
     Home: undefined;
@@ -28,9 +27,12 @@ const App = () => {
                         name="Home"
                         component={Home}
                         options={{
-                            title: '',
-                            headerTransparent: true,
-                            headerRight: HomeHeaderRight
+                            headerRight: HomeHeaderRight,
+                            headerTitle: '',
+                            headerStyle: {
+                                backgroundColor: '#f4f4f4'
+                            },
+                            headerShadowVisible: false
                         }}
                     />
                     <Stack.Screen
