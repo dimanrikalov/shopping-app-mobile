@@ -1,21 +1,21 @@
-import { createSlice } from '@reduxjs/toolkit';
+import {createSlice} from '@reduxjs/toolkit';
 
 interface IEditModeState {
-	value: boolean;
+    value: boolean;
 }
 
-const initialState: IEditModeState = { value: false };
+const initialState: IEditModeState = {value: false};
 
 const editModeSlice = createSlice({
-	name: 'edit-mode',
-	initialState,
-	reducers: {
-		toggle(state) {
-			state.value = !state.value;
-		},
-	},
+    name: 'edit-mode',
+    initialState,
+    reducers: {
+        toggle(state) {
+            state.value = !state.value;
+        }
+    }
 });
 
-export const { toggle } = editModeSlice.actions;
+export const {toggle} = editModeSlice.actions;
 
 export default editModeSlice.reducer;
