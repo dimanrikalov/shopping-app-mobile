@@ -108,7 +108,10 @@ export const productsApi = createApi({
                 };
 
                 addDoc(ref, data).catch(err => (error = {...err}));
-                return {error};
+                if (error) {
+                    return {error};
+                }
+                return {data: 'Successfully added!'};
             }
         }),
         deleteAll: builder.mutation({
@@ -130,7 +133,11 @@ export const productsApi = createApi({
                         error = {...err}; //could not get the docs
                     });
 
-                return {error};
+                if (error) {
+                    return {error};
+                }
+
+                return {data: 'Successfully delted all items!'};
             }
         }),
         moveAll: builder.mutation({
@@ -159,7 +166,11 @@ export const productsApi = createApi({
                         error = {...err}; //could not get the docs
                     });
 
-                return {error};
+                if (error) {
+                    return {error};
+                }
+
+                return {data: 'Successfully moved all items!'};
             }
         }),
         editProduct: builder.mutation({
@@ -172,7 +183,11 @@ export const productsApi = createApi({
                     error = {...err};
                 });
 
-                return {error};
+                if (error) {
+                    return {error};
+                }
+
+                return {data: 'Successfully edited!'};
             }
         }),
         deleteProduct: builder.mutation({
@@ -184,7 +199,11 @@ export const productsApi = createApi({
                     error = {...err};
                 });
 
-                return {error};
+                if (error) {
+                    return {error};
+                }
+
+                return {data: 'Successfully deleted!'};
             }
         }),
         moveProduct: builder.mutation({
@@ -214,7 +233,10 @@ export const productsApi = createApi({
                     error = {...err};
                 }
 
-                return {error};
+                if (error) {
+                    return {error};
+                }
+                return {data: 'Successfully moved.'};
             }
         })
     })
