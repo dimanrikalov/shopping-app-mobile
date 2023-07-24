@@ -1,7 +1,9 @@
 import {useState} from 'react';
 import {MyText} from './MyText';
 import {View, TextInput, StyleSheet, Pressable} from 'react-native';
-
+import {COLLECTIONS, useCreateProductMutation} from '../../app/productsApi';
+import {CreateProductBody} from '../../app/productsApi';
+import {useNavigation} from '@react-navigation/native';
 interface IInputsFocusStates {
     name: boolean;
     price: boolean;
@@ -9,6 +11,9 @@ interface IInputsFocusStates {
 }
 
 export const Form = () => {
+    const navigation = useNavigation();
+    const [createProduct] = useCreateProductMutation();
+    const [error, setError] = useState();
     const [inputsFocusStatuses, setInputsFocusStatuses] =
         useState<IInputsFocusStates>({
             name: false,
@@ -16,11 +21,29 @@ export const Form = () => {
             quantity: false
         });
 
-    const createHandler = () => {};
+    const [inputValues, setInputValues] = useState({
+        name: '',
+        price: '',
+        quantity: ''
+    });
+
+    const createHandler = async () => {
+        createProduct({
+            name: inputValues.name,
+            price: Number(inputValues.price),
+            quantity: Number(inputValues.quantity),
+            collectionToModify: COLLECTIONS.PRODUCTS_TO_BE_ADDED
+        })
+            .then(() => navigation.goBack())
+            .catch((err: any) => {
+                setError(err.message);
+            });
+    };
 
     return (
         <View style={styles.formContainer}>
             <View style={styles.inputContainer}>
+                {error && <MyText style={styles.errorMessage}>{error}</MyText>}
                 <MyText>Enter product name:</MyText>
                 <TextInput
                     style={[
@@ -39,6 +62,10 @@ export const Form = () => {
                             ...prev,
                             name: false
                         }))
+                    }
+                    value={inputValues.name}
+                    onChangeText={newText =>
+                        setInputValues(prev => ({...prev, name: newText}))
                     }
                 />
             </View>
@@ -62,10 +89,14 @@ export const Form = () => {
                             price: false
                         }))
                     }
+                    value={inputValues.price}
+                    onChangeText={newText =>
+                        setInputValues(prev => ({...prev, price: newText}))
+                    }
                 />
             </View>
             <View style={styles.inputContainer}>
-                <MyText>Enter quantity (kg):</MyText>
+                <MyText>Enter quantity (count / kg):</MyText>
                 <TextInput
                     style={[
                         styles.input,
@@ -84,9 +115,15 @@ export const Form = () => {
                             quantity: false
                         }))
                     }
+                    value={inputValues.quantity}
+                    onChangeText={newText =>
+                        setInputValues(prev => ({...prev, quantity: newText}))
+                    }
                 />
             </View>
-            <Pressable onPress={createHandler} />
+            <Pressable onPress={createHandler} style={styles.button}>
+                <MyText style={styles.buttonText}>Add to "Add to cart"</MyText>
+            </Pressable>
         </View>
     );
 };
@@ -97,6 +134,11 @@ const styles = StyleSheet.create({
         display: 'flex',
         gap: 24
     },
+    errorMessage: {
+        backgroundColor: '#fa9d9d',
+        borderWidth: 1,
+        borderColor: 'red'
+    },
     inputContainer: {
         display: 'flex',
         gap: 9
@@ -104,12 +146,21 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderColor: 'grey',
-        borderRadius: 12,
+        borderRadius: 6,
         paddingVertical: 6,
         paddingHorizontal: 12,
         fontSize: 18
     },
     inputFocused: {
         borderColor: '#4F8EF7'
+    },
+    button: {
+        backgroundColor: '#4F8EF7',
+        borderRadius: 6,
+        padding: 9
+    },
+    buttonText: {
+        textAlign: 'center',
+        color: 'white'
     }
 });

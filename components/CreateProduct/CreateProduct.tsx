@@ -12,7 +12,7 @@ type CreateProductProps = NativeStackScreenProps<
 export const CreateProduct: React.FC<CreateProductProps> = props => {
     return (
         <View style={style.createProductContainer}>
-            <MyText>Add Products</MyText>
+            <MyText>Add Product</MyText>
             <Form />
         </View>
     );
@@ -22,7 +22,6 @@ const style = StyleSheet.create({
     createProductContainer: {
         flex: 1,
         alignItems: 'center',
-        paddingTop: 64,
         display: 'flex',
         gap: 32
     }
