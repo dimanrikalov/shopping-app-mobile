@@ -124,8 +124,8 @@ const styles = StyleSheet.create({
     crossLine: {
         position: 'absolute',
         left: '5%',
-        height: 1.5,
+        height: 2,
         width: '95%',
-        backgroundColor: 'black'
+        backgroundColor: 'darkgrey'
     }
 });

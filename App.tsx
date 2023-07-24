@@ -39,17 +39,23 @@ const App = () => {
                         name="AddProducts"
                         component={AddProducts}
                         options={{
-                            title: '',
-                            headerTransparent: true,
-                            headerRight: AddProductsHeaderRight
+                            headerRight: AddProductsHeaderRight,
+                            headerTitle: '',
+                            headerStyle: {
+                                backgroundColor: '#f4f4f4'
+                            },
+                            headerShadowVisible: false
                         }}
                     />
                     <Stack.Screen
                         name="CreateProduct"
                         component={CreateProduct}
                         options={{
-                            title: '',
-                            headerTransparent: true
+                            headerTitle: '',
+                            headerStyle: {
+                                backgroundColor: '#f4f4f4'
+                            },
+                            headerShadowVisible: false
                         }}
                     />
                 </Stack.Navigator>
