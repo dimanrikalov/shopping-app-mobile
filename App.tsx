@@ -5,7 +5,11 @@ import {NavigationContainer} from '@react-navigation/native';
 import {AddProducts} from './components/AddProducts/AddProducts';
 import {CreateProduct} from './components/CreateProduct/CreateProduct';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {PressableIcon} from './components/utils/PressableIcon';
+import {
+    AddProductsHeaderRight,
+    HomeHeaderRight,
+    PressableIcon
+} from './components/utils/PressableIcon';
 
 export type RootStackParamList = {
     Home: undefined;
@@ -26,13 +30,25 @@ const App = () => {
                         options={{
                             title: '',
                             headerTransparent: true,
-                            headerRight: PressableIcon
+                            headerRight: HomeHeaderRight
                         }}
                     />
-                    <Stack.Screen name="AddProducts" component={AddProducts} />
+                    <Stack.Screen
+                        name="AddProducts"
+                        component={AddProducts}
+                        options={{
+                            title: '',
+                            headerTransparent: true,
+                            headerRight: AddProductsHeaderRight
+                        }}
+                    />
                     <Stack.Screen
                         name="CreateProduct"
                         component={CreateProduct}
+                        options={{
+                            title: '',
+                            headerTransparent: true
+                        }}
                     />
                 </Stack.Navigator>
             </NavigationContainer>

@@ -1,7 +1,8 @@
-import {RootStackParamList} from '../../App';
-import {Pressable, Text, View} from 'react-native';
-import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {Form} from '../utils/Form';
 import {MyText} from '../utils/MyText';
+import {RootStackParamList} from '../../App';
+import {Pressable, Text, View, StyleSheet} from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
 
 type CreateProductProps = NativeStackScreenProps<
     RootStackParamList,
@@ -10,11 +11,19 @@ type CreateProductProps = NativeStackScreenProps<
 
 export const CreateProduct: React.FC<CreateProductProps> = props => {
     return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={style.createProductContainer}>
             <MyText>Add Products</MyText>
-            <Pressable onPressOut={() => props.navigation.navigate('Home')}>
-                <MyText>Go Home</MyText>
-            </Pressable>
+            <Form />
         </View>
     );
 };
+
+const style = StyleSheet.create({
+    createProductContainer: {
+        flex: 1,
+        alignItems: 'center',
+        paddingTop: 64,
+        display: 'flex',
+        gap: 32
+    }
+});
