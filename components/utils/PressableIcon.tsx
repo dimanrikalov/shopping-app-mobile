@@ -6,8 +6,8 @@ import {
 import {toggle} from '../../app/editModeSlice';
 import {useDispatch, useSelector} from 'react-redux';
 import {useNavigation} from '@react-navigation/native';
-import {Alert, Pressable, StyleSheet, View} from 'react-native';
 import IonIcons from 'react-native-vector-icons/Ionicons';
+import {Alert, Pressable, StyleSheet, View} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';

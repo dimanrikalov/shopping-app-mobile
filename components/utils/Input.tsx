@@ -1,16 +1,8 @@
-import {
-    TextInput,
-    StyleSheet,
-    NativeSyntheticEvent,
-    TextInputChangeEventData,
-    View
-} from 'react-native';
-import {MyText} from './MyText';
 import {useState} from 'react';
+import {MyText} from './MyText';
+import {View, TextInput, StyleSheet} from 'react-native';
 
-type InputChangeHandler = (
-    e: NativeSyntheticEvent<TextInputChangeEventData>
-) => void;
+type InputChangeHandler = (textInput: string) => void;
 
 export enum InputTypes {
     NAME_INPUT = 'name-input',
@@ -50,7 +42,7 @@ export const Input = ({
                 keyboardType={type}
                 value={value}
                 id={elementId}
-                onChange={setInputs}
+                onChangeText={setInputs}
                 placeholder={placeholder}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
@@ -70,7 +62,7 @@ const styles = StyleSheet.create({
     input: {
         borderWidth: 1,
         borderColor: 'grey',
-        borderRadius: 12,
+        borderRadius: 9,
         paddingVertical: 6,
         paddingHorizontal: 12,
         fontSize: 18
