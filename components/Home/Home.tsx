@@ -1,12 +1,17 @@
-import {Text, View, Pressable} from 'react-native';
-import {NavigationProp} from '@react-navigation/native';
+import {RootStackParamList} from '../../App';
+import {View, Pressable} from 'react-native';
+import {NativeStackScreenProps} from '@react-navigation/native-stack';
+import {MyText} from '../utils/MyText';
 
-export const Home = ({navigation}: {navigation: NavigationProp<any>}) => {
+type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
+
+export const Home: React.FC<HomeScreenProps> = props => {
     return (
         <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-            <Text>Home Screen</Text>
-            <Pressable onPressOut={() => navigation.navigate('AddProducts')}>
-                <Text>Go Home</Text>
+            <MyText>Home Screen</MyText>
+            <Pressable
+                onPressOut={() => props.navigation.navigate('AddProducts')}>
+                <MyText>Go to Add Products</MyText>
             </Pressable>
         </View>
     );
