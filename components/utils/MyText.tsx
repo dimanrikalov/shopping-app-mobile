@@ -1,8 +1,14 @@
 import {Text} from 'react-native';
 import {StyleSheet} from 'react-native';
 
-export const MyText = ({children}: {children: string}) => {
-    return <Text style={styles.text}>{children}</Text>;
+export const MyText = ({
+    style,
+    children
+}: {
+    style?: Object;
+    children: string | string[];
+}) => {
+    return <Text style={[styles.text, style && style]}>{children}</Text>;
 };
 
 const styles = StyleSheet.create({

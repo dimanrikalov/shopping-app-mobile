@@ -5,12 +5,17 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {HeaderButtonProps} from '@react-navigation/native-stack/lib/typescript/src/types';
+import {useDispatch, useSelector} from 'react-redux';
+import {toggle} from '../../app/editModeSlice';
 
 export const HomeHeaderRight = () => {
     const navigation = useNavigation();
+    const dispatch = useDispatch();
+    const toggleEditMode = () => dispatch(toggle());
+
     return (
         <View style={styles.headerContainer}>
-            <Pressable>
+            <Pressable onPress={toggleEditMode}>
                 <FontAwesome name="edit" size={24} color="#4F8EF7" />
             </Pressable>
             <Pressable onPress={() => navigation.navigate('AddProducts')}>
