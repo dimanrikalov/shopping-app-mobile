@@ -1,24 +1,21 @@
-import {configureStore, createSlice} from '@reduxjs/toolkit';
-
-
-//created a random slice with reducer just to silence the errors
-const some = createSlice({
-    name: 'some-reducer',
-    initialState: {value: 0},
-    reducers: {
-        increment: prevState => {
-            prevState.value + 1;
-        }
-    }
-});
+import {productsApi} from './productsApi';
+import editModeReducer from './editModeSlice';
+import {configureStore} from '@reduxjs/toolkit';
+import {setupListeners} from '@reduxjs/toolkit/dist/query';
 
 export const store = configureStore({
     reducer: {
-        some: some.reducer
-    }
+        editModeReducer: editModeReducer,
+        [productsApi.reducerPath]: productsApi.reducer
+    },
+    middleware: getDefaultMiddleware =>
+        getDefaultMiddleware().concat(productsApi.middleware)
 });
+
+setupListeners(store.dispatch);
 
 // Infer the `RootState` and `AppDispatch` types from the store itself
 export type RootState = ReturnType<typeof store.getState>;
+
 // Inferred type: {posts: PostsState, comments: CommentsState, users: UsersState}
 export type AppDispatch = typeof store.dispatch;
