@@ -12,8 +12,8 @@ import {
     FirestoreError,
     DocumentReference
 } from 'firebase/firestore';
-import {firestore} from '../firebase/firebase';
-import {createApi, fakeBaseQuery} from '@reduxjs/toolkit/query/react';
+import { firestore } from '../firebase/firebase';
+import { createApi, fakeBaseQuery } from '@reduxjs/toolkit/query/react';
 
 export enum COLLECTIONS {
     PRODUCTS_TO_BUY = 'productsToBuy',
@@ -52,15 +52,15 @@ export const productsApi = createApi({
     reducerPath: 'productsApi',
     baseQuery: fakeBaseQuery(),
     tagTypes: ['Products'],
-    endpoints: builder => ({
+    endpoints: (builder) => ({
         getAllProducts: builder.query<ProductEntry[], string>({
             providesTags: ['Products'],
             queryFn(collection: COLLECTIONS) {
-                return {data: []};
+                return { data: [] };
             },
             async onCacheEntryAdded(
                 collectionName: COLLECTIONS,
-                {cacheDataLoaded, updateCachedData, cacheEntryRemoved}
+                { cacheDataLoaded, updateCachedData, cacheEntryRemoved }
             ) {
                 let unsubscribe: Unsubscribe;
                 let error;
@@ -69,9 +69,9 @@ export const productsApi = createApi({
 
                 unsubscribe = onSnapshot(
                     collection(firestore, collectionName),
-                    snapshot => {
-                        updateCachedData(draft => {
-                            return snapshot?.docs?.map(doc => {
+                    (snapshot) => {
+                        updateCachedData((draft) => {
+                            return snapshot?.docs?.map((doc) => {
                                 return {
                                     ...doc.data(),
                                     id: doc.id
@@ -80,7 +80,7 @@ export const productsApi = createApi({
                         });
                     },
                     (err: FirestoreError) => {
-                        error = {...err};
+                        error = { ...err };
                     }
                 );
 
@@ -107,11 +107,11 @@ export const productsApi = createApi({
                     price: body.price
                 };
 
-                addDoc(ref, data).catch(err => (error = {...err}));
+                addDoc(ref, data).catch((err) => (error = { ...err }));
                 if (error) {
-                    return {error};
+                    return { error };
                 }
-                return {data: 'Successfully added!'};
+                return { data: 'Successfully added!' };
             }
         }),
         deleteAll: builder.mutation({
@@ -120,94 +120,94 @@ export const productsApi = createApi({
 
                 const ref = collection(firestore, collectionToDelete);
                 getDocs(ref)
-                    .then(querySnapshot => {
+                    .then((querySnapshot) => {
                         Promise.all(
                             querySnapshot.docs.map(
-                                doc => new Promise(() => deleteDoc(doc.ref))
+                                (doc) => new Promise(() => deleteDoc(doc.ref))
                             )
-                        ).catch(err => {
-                            error = {...err}; //could not fulfill all delete docs promises
+                        ).catch((err) => {
+                            error = { ...err }; //could not fulfill all delete docs promises
                         });
                     })
                     .catch((err: any) => {
-                        error = {...err}; //could not get the docs
+                        error = { ...err }; //could not get the docs
                     });
 
                 if (error) {
-                    return {error};
+                    return { error };
                 }
 
-                return {data: 'Successfully delted all items!'};
+                return { data: 'Successfully delted all items!' };
             }
         }),
         moveAll: builder.mutation({
-            queryFn: ({srcCollection, destCollection}: IMoveAllBody) => {
+            queryFn: ({ srcCollection, destCollection }: IMoveAllBody) => {
                 let error;
 
                 const srcRef = collection(firestore, srcCollection);
                 const destRef = collection(firestore, destCollection);
 
                 getDocs(srcRef)
-                    .then(querySnapshot => {
+                    .then((querySnapshot) => {
                         Promise.all(
                             querySnapshot.docs.map(
-                                product =>
+                                (product) =>
                                     new Promise(() => {
                                         addDoc(destRef, product.data()).then(
                                             () => deleteDoc(product.ref)
                                         );
                                     })
                             )
-                        ).catch(err => {
-                            error = {...err}; //could not fulfill all add docs promises
+                        ).catch((err) => {
+                            error = { ...err }; //could not fulfill all add docs promises
                         });
                     })
-                    .catch(err => {
-                        error = {...err}; //could not get the docs
+                    .catch((err) => {
+                        error = { ...err }; //could not get the docs
                     });
 
                 if (error) {
-                    return {error};
+                    return { error };
                 }
 
-                return {data: 'Successfully moved all items!'};
+                return { data: 'Successfully moved all items!' };
             }
         }),
         editProduct: builder.mutation({
-            queryFn: ({collectionName, id, data}: IEditProduct) => {
+            queryFn: ({ collectionName, id, data }: IEditProduct) => {
                 let error;
 
                 updateDoc(doc(firestore, collectionName, id), {
                     ...data
-                }).catch(err => {
-                    error = {...err};
+                }).catch((err) => {
+                    error = { ...err };
                 });
 
                 if (error) {
-                    return {error};
+                    return { error };
                 }
 
-                return {data: 'Successfully edited!'};
+                return { data: 'Successfully edited!' };
             }
         }),
         deleteProduct: builder.mutation({
-            queryFn: ({collectionName, id}: IModifyProduct) => {
+            queryFn: ({ collectionName, id }: IModifyProduct) => {
                 let error;
 
                 const ref = doc(firestore, collectionName, id);
-                deleteDoc(ref).catch(err => {
-                    error = {...err};
+                deleteDoc(ref).catch((err) => {
+                    error = { ...err };
                 });
 
                 if (error) {
-                    return {error};
+                    return { error };
                 }
 
-                return {data: 'Successfully deleted!'};
+                return { data: 'Successfully deleted!' };
             }
         }),
         moveProduct: builder.mutation({
-            queryFn: async ({collectionName, id}: IModifyProduct) => {
+            queryFn: async ({ collectionName, id }: IModifyProduct) => {
                 let error = 'No error';
 
                 const [srcCollection, destCollection] =
@@ -230,13 +230,13 @@ export const productsApi = createApi({
                     await addDoc(collectionRef, productData);
                     await deleteDoc(ref);
                 } catch (err: any) {
-                    error = {...err};
+                    error = { ...err };
                 }
 
                 if (error) {
-                    return {error};
+                    return { error };
                 }
-                return {data: 'Successfully moved.'};
+                return { data: 'Successfully moved.' };
             }
         })
     })
