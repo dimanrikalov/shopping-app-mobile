@@ -1,10 +1,10 @@
-import {createSlice} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 interface IEditModeState {
     value: boolean;
 }
 
-const initialState: IEditModeState = {value: false};
+const initialState: IEditModeState = { value: false };
 
 const editModeSlice = createSlice({
     name: 'edit-mode',
@@ -16,6 +16,6 @@ const editModeSlice = createSlice({
     }
 });
 
-export const {toggle} = editModeSlice.actions;
+export const { toggle } = editModeSlice.actions;
 
 export default editModeSlice.reducer;

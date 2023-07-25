@@ -1,5 +1,5 @@
-import {Text} from 'react-native';
-import {StyleSheet} from 'react-native';
+import { Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 export const MyText = ({
     style,

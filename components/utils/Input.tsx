@@ -1,6 +1,6 @@
-import {useState} from 'react';
-import {MyText} from './MyText';
-import {View, TextInput, StyleSheet} from 'react-native';
+import { useState } from 'react';
+import { MyText } from './MyText';
+import { View, TextInput, StyleSheet } from 'react-native';
 
 type InputChangeHandler = (textInput: string) => void;
 
@@ -10,13 +10,13 @@ export enum InputTypes {
     QUANTITY_INPUT = 'quantity-input'
 }
 
-export enum Type {
+export enum ITypes {
     TEXT = 'default',
     NUMERIC = 'numeric'
 }
 
 interface IInputBody {
-    type: Type;
+    type: ITypes;
     value: string;
     label?: string;
     placeholder: string;
@@ -38,7 +38,7 @@ export const Input = ({
         <View style={styles.inputContainer}>
             {label && <MyText style={styles.label}>{label}</MyText>}
             <TextInput
-                style={[styles.input, isFocused && styles.inputContainer]}
+                style={[styles.input, isFocused && styles.inputFocused]}
                 keyboardType={type}
                 value={value}
                 id={elementId}
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         gap: 12
     },
     label: {
-        fontSize: 14
+        fontSize: 18
     },
     input: {
         borderWidth: 1,

@@ -1,8 +1,11 @@
-import {useState} from 'react';
-import {Alert} from 'react-native';
-import {ItemCard} from './ItemCard';
-import {EditItemCard} from './EditItemCard';
-import {COLLECTIONS, useDeleteProductMutation} from '../../../app/productsApi';
+import {
+    COLLECTIONS,
+    useDeleteProductMutation
+} from '../../../app/productsApi';
+import { useState } from 'react';
+import { Alert } from 'react-native';
+import { ItemCard } from './ItemCard';
+import { EditItemCard } from './EditItemCard';
 
 export interface ItemInterface {
     id: string;
@@ -35,7 +38,7 @@ export const Item = ({
                 {
                     text: 'Yes',
                     onPress: () => {
-                        deleteProduct({collectionName, id});
+                        deleteProduct({ collectionName, id });
                     }
                 },
                 {

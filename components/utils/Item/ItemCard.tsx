@@ -1,14 +1,14 @@
-import {MyText} from '../MyText';
-import {useSelector} from 'react-redux';
-import {RootState} from '../../../app/store';
-import {COLLECTIONS} from '../../../app/productsApi';
-import {useMoveProductMutation} from '../../../app/productsApi';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
-import {GestureResponderEvent, Pressable, StyleSheet, View} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {Input} from '../Input';
+import { useState } from 'react';
+import { MyText } from '../MyText';
+import { Button } from '../Button';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../app/store';
+import { COLLECTIONS } from '../../../app/productsApi';
 import CheckBox from '@react-native-community/checkbox';
-import {useState} from 'react';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import { useMoveProductMutation } from '../../../app/productsApi';
+import { View, StyleSheet, GestureResponderEvent } from 'react-native';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export type PressHandler = (event: GestureResponderEvent) => void;
 
@@ -40,7 +40,7 @@ export const ItemCard = ({
     onDeleteHandler
 }: IItemCardBody) => {
     const [moveProduct] = useMoveProductMutation();
-    const [checkValue, setCheckValue] = useState(
+    const [checkValue] = useState(
         collectionName === COLLECTIONS.BOUGHT_PRODUCTS
     );
 
@@ -48,8 +48,8 @@ export const ItemCard = ({
         (state: RootState) => state.editModeReducer.value
     );
 
-    const checkboxHandler = async (newValue: boolean) => {
-        await moveProduct({collectionName, id});
+    const checkboxHandler = async () => {
+        await moveProduct({ collectionName, id });
     };
 
     return (
@@ -65,7 +65,7 @@ export const ItemCard = ({
                 ]}>
                 {collectionName !== COLLECTIONS.PRODUCTS_TO_BE_ADDED && (
                     <CheckBox
-                        tintColors={{true: '#4F8EF7', false: 'fff'}}
+                        tintColors={{ true: '#4F8EF7', false: 'fff' }}
                         value={checkValue}
                         onValueChange={checkboxHandler}
                         id={`${productData.name}-${productData.quantity}-${productData.price}-${id}`}
@@ -96,20 +96,30 @@ export const ItemCard = ({
             {shouldEdit &&
                 collectionName !== COLLECTIONS.PRODUCTS_TO_BE_ADDED && (
                     <View style={styles.rightSide}>
-                        <Pressable onPress={changeMode}>
-                            <FontAwesome
-                                name="edit"
-                                size={24}
-                                color="#4F8EF7"
-                            />
-                        </Pressable>
-                        <Pressable onPress={onDeleteHandler}>
-                            <MaterialCommunityIcons
-                                name="delete"
-                                size={24}
-                                color="#4F8EF7"
-                            />
-                        </Pressable>
+                        <Button
+                            btnProps={{
+                                handler: changeMode,
+                                icon: (
+                                    <FontAwesome
+                                        name="edit"
+                                        size={24}
+                                        color="#4F8EF7"
+                                    />
+                                )
+                            }}
+                        />
+                        <Button
+                            btnProps={{
+                                handler: onDeleteHandler,
+                                icon: (
+                                    <MaterialCommunityIcons
+                                        name="delete"
+                                        size={24}
+                                        color="#4F8EF7"
+                                    />
+                                )
+                            }}
+                        />
                     </View>
                 )}
         </View>
@@ -119,13 +129,13 @@ export const ItemCard = ({
 const styles = StyleSheet.create({
     cardBackground: {
         borderWidth: 1,
-        borderColor: 'lightgrey',
         borderRadius: 12,
+        paddingVertical: 9,
+        paddingHorizontal: 12,
+        borderColor: 'lightgrey',
         display: 'flex',
         flexDirection: 'row',
         boxShadow: '0px 0px 8px 2px rgba(109, 109, 109, 0.36)',
-        paddingVertical: 9,
-        paddingHorizontal: 12,
         alignItems: 'center',
         justifyContent: 'space-between',
         position: 'relative',

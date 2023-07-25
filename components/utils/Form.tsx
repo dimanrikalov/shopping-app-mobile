@@ -1,26 +1,15 @@
-import {useState} from 'react';
-import {MyText} from './MyText';
-import {View, TextInput, StyleSheet, Pressable} from 'react-native';
-import {COLLECTIONS, useCreateProductMutation} from '../../app/productsApi';
-import {CreateProductBody} from '../../app/productsApi';
-import {useNavigation} from '@react-navigation/native';
-interface IInputsFocusStates {
-    name: boolean;
-    price: boolean;
-    quantity: boolean;
-}
+import { useState } from 'react';
+import { MyText } from './MyText';
+import { Button } from './Button';
+import { View, StyleSheet } from 'react-native';
+import { ITypes, Input, InputTypes } from './Input';
+import { useNavigation } from '@react-navigation/native';
+import { COLLECTIONS, useCreateProductMutation } from '../../app/productsApi';
 
 export const Form = () => {
     const navigation = useNavigation();
-    const [createProduct] = useCreateProductMutation();
     const [error, setError] = useState();
-    const [inputsFocusStatuses, setInputsFocusStatuses] =
-        useState<IInputsFocusStates>({
-            name: false,
-            price: false,
-            quantity: false
-        });
-
+    const [createProduct] = useCreateProductMutation();
     const [inputValues, setInputValues] = useState({
         name: '',
         price: '',
@@ -42,88 +31,54 @@ export const Form = () => {
 
     return (
         <View style={styles.formContainer}>
-            <View style={styles.inputContainer}>
-                {error && <MyText style={styles.errorMessage}>{error}</MyText>}
-                <MyText>Enter product name:</MyText>
-                <TextInput
-                    style={[
-                        styles.input,
-                        inputsFocusStatuses.name && styles.inputFocused
-                    ]}
-                    placeholder="Apple"
-                    onFocus={() =>
-                        setInputsFocusStatuses(prev => ({
-                            ...prev,
-                            name: true
-                        }))
-                    }
-                    onBlur={() =>
-                        setInputsFocusStatuses(prev => ({
-                            ...prev,
-                            name: false
-                        }))
-                    }
-                    value={inputValues.name}
-                    onChangeText={newText =>
-                        setInputValues(prev => ({...prev, name: newText}))
-                    }
-                />
-            </View>
-            <View style={styles.inputContainer}>
-                <MyText>Enter product price($) (per 1):</MyText>
-                <TextInput
-                    style={[
-                        styles.input,
-                        inputsFocusStatuses.price && styles.inputFocused
-                    ]}
-                    placeholder="3.5 ($)"
-                    onFocus={() =>
-                        setInputsFocusStatuses(prev => ({
-                            ...prev,
-                            price: true
-                        }))
-                    }
-                    onBlur={() =>
-                        setInputsFocusStatuses(prev => ({
-                            ...prev,
-                            price: false
-                        }))
-                    }
-                    value={inputValues.price}
-                    onChangeText={newText =>
-                        setInputValues(prev => ({...prev, price: newText}))
-                    }
-                />
-            </View>
-            <View style={styles.inputContainer}>
-                <MyText>Enter quantity (count / kg):</MyText>
-                <TextInput
-                    style={[
-                        styles.input,
-                        inputsFocusStatuses.quantity && styles.inputFocused
-                    ]}
-                    placeholder="1.5"
-                    onFocus={() =>
-                        setInputsFocusStatuses(prev => ({
-                            ...prev,
-                            quantity: true
-                        }))
-                    }
-                    onBlur={() =>
-                        setInputsFocusStatuses(prev => ({
-                            ...prev,
-                            quantity: false
-                        }))
-                    }
-                    value={inputValues.quantity}
-                    onChangeText={newText =>
-                        setInputValues(prev => ({...prev, quantity: newText}))
-                    }
-                />
-            </View>
-            <Pressable onPress={createHandler} style={styles.button}>
-                <MyText style={styles.buttonText}>Add to "Add to cart"</MyText>
-            </Pressable>
+            {error && <MyText style={styles.errorMessage}>{error}</MyText>}
+            <Input
+                label={'Enter product name:'}
+                placeholder={'Apple'}
+                type={ITypes.TEXT}
+                elementId={InputTypes.NAME_INPUT}
+                value={inputValues.name}
+                setInputs={(newNameValue) =>
+                    setInputValues((prev) => ({
+                        ...prev,
+                        name: newNameValue
+                    }))
+                }
+            />
+            <Input
+                label={'Enter product price($) (per 1):'}
+                placeholder={'$3.5'}
+                type={ITypes.NUMERIC}
+                elementId={InputTypes.PRICE_INPUT}
+                value={inputValues.price}
+                setInputs={(newPriceValue) =>
+                    setInputValues((prev) => ({
+                        ...prev,
+                        price: newPriceValue
+                    }))
+                }
+            />
+
+            <Input
+                label={'Enter quantity (count / kg):'}
+                placeholder={'2.5kg / 3 (count)'}
+                type={ITypes.NUMERIC}
+                elementId={InputTypes.QUANTITY_INPUT}
+                value={inputValues.quantity}
+                setInputs={(newQuantityValue) =>
+                    setInputValues((prev) => ({
+                        ...prev,
+                        quantity: newQuantityValue
+                    }))
+                }
+            />
+
+            <Button
+                btnProps={{
+                    handler: createHandler,
+                    msg: 'Add to "Add to cart"'
+                }}
+            />
         </View>
     );
 };
@@ -138,29 +93,5 @@ const styles = StyleSheet.create({
         backgroundColor: '#fa9d9d',
         borderWidth: 1,
         borderColor: 'red'
-    },
-    inputContainer: {
-        display: 'flex',
-        gap: 9
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: 'grey',
-        borderRadius: 6,
-        paddingVertical: 6,
-        paddingHorizontal: 12,
-        fontSize: 18
-    },
-    inputFocused: {
-        borderColor: '#4F8EF7'
-    },
-    button: {
-        backgroundColor: '#4F8EF7',
-        borderRadius: 6,
-        padding: 9
-    },
-    buttonText: {
-        textAlign: 'center',
-        color: 'white'
     }
 });
