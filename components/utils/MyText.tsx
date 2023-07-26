@@ -6,7 +6,7 @@ export const MyText = ({
     children
 }: {
     style?: Object;
-    children: string | string[];
+    children: string | string[] | React.ReactNode;
 }) => {
     return <Text style={[styles.text, style && style]}>{children}</Text>;
 };

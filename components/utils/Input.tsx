@@ -5,6 +5,8 @@ import { View, TextInput, StyleSheet } from 'react-native';
 type InputChangeHandler = (textInput: string) => void;
 
 export enum InputTypes {
+    EMAIL_INPUT = 'email-input',
+    PASSWORD_INPUT = 'password-input',
     NAME_INPUT = 'name-input',
     PRICE_INPUT = 'price-input',
     QUANTITY_INPUT = 'quantity-input'
@@ -38,6 +40,7 @@ export const Input = ({
         <View style={styles.inputContainer}>
             {label && <MyText style={styles.label}>{label}</MyText>}
             <TextInput
+                secureTextEntry={label === 'Password'}
                 style={[styles.input, isFocused && styles.inputFocused]}
                 keyboardType={type}
                 value={value}

@@ -90,8 +90,12 @@ const styles = StyleSheet.create({
         gap: 24
     },
     errorMessage: {
-        backgroundColor: '#fa9d9d',
+        backgroundColor: '#f5bfbf',
+        textAlign: 'center',
+        padding: 6,
+        borderRadius: 10,
         borderWidth: 1,
-        borderColor: 'red'
+        borderColor: 'red',
+        color: 'red'
     }
 });
