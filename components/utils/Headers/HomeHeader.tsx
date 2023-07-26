@@ -2,12 +2,11 @@ import { Button } from '../Button';
 import { useDispatch } from 'react-redux';
 import { StyleSheet, View } from 'react-native';
 import { toggle } from '../../../app/editModeSlice';
-import { RootStackParamList, VIEWS } from '../../../App';
+import { RootStackParamList, VIEWS } from '../../Router';
 import { useNavigation } from '@react-navigation/native';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack/lib/typescript/src/types';
-
 export const HomeHeaderRight = () => {
     const { navigate } =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();

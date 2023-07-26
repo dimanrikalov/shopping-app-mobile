@@ -1,5 +1,13 @@
-apply plugin: "com.android.application"
+plugins {
+    id 'com.android.application'
+    // Add the ID of the plugin
+    id 'com.google.gms.google-services'
+}
+
+
 apply plugin: "com.facebook.react"
+apply plugin: "com.android.application"
+apply plugin: "com.google.gms.google-services"
 
 /**
  * This is the configuration block to customize your React Native Android app.
@@ -73,9 +81,9 @@ android {
 
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "com.shoppingappmobile"
+    namespace "com.dimanrikalov.shoppingAppMobile"
     defaultConfig {
-        applicationId "com.shoppingappmobile"
+        applicationId "com.dimanrikalov.shoppingAppMobile"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

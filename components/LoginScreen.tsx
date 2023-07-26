@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import { MyText } from './utils/MyText';
 import { Button } from './utils/Button';
-import { auth } from '../firebase/firebase';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from './Router';
 import { useNavigation } from '@react-navigation/native';
 import { ITypes, Input, InputTypes } from './utils/Input';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import auth from '@react-native-firebase/auth';
 
 export const LoginScreen = () => {
     const { navigate } =
@@ -19,29 +18,15 @@ export const LoginScreen = () => {
     });
 
     const submitLogin = async () => {
-        setError('');
-
-        if (!inputs.email || !inputs.password) {
-            setError('Both fields are requried!');
-            return;
-        }
-        console.log(inputs);
-        try {
-            const { user } = await signInWithEmailAndPassword(
-                auth,
-                inputs.email,
-                inputs.password
-            );
-
-            return;
-            if (!user) {
-                throw new Error('Login failed!');
-            }
-            navigate('Home');
-        } catch (err: any) {
-            console.log(err);
-            setError(err.message);
-        }
+        auth()
+            .createUserWithEmailAndPassword(inputs.email, inputs.password)
+            .then(() => {
+                console.log('Login with credentials succesful');
+                navigate('Home');
+            })
+            .catch((err: any) => {
+                setError(err.message);
+            });
     };
 
     return (

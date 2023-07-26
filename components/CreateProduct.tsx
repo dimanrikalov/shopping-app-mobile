@@ -1,6 +1,6 @@
 import { Form } from './utils/Form';
 import { MyText } from './utils/MyText';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from './Router';
 import { View, StyleSheet } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 

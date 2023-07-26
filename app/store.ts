@@ -1,3 +1,4 @@
+import { userApi } from './userApi';
 import { productsApi } from './productsApi';
 import editModeReducer from './editModeSlice';
 import { configureStore } from '@reduxjs/toolkit';
@@ -6,10 +7,13 @@ import { setupListeners } from '@reduxjs/toolkit/dist/query';
 export const store = configureStore({
     reducer: {
         editModeReducer: editModeReducer,
+        [userApi.reducerPath]: userApi.reducer,
         [productsApi.reducerPath]: productsApi.reducer
     },
     middleware: (getDefaultMiddleware) =>
-        getDefaultMiddleware().concat(productsApi.middleware)
+        getDefaultMiddleware()
+            .concat(userApi.middleware)
+            .concat(productsApi.middleware)
 });
 
 setupListeners(store.dispatch);

@@ -6,7 +6,7 @@ import {
 import { Button } from '../Button';
 import { styles } from './HomeHeader';
 import { Alert, View } from 'react-native';
-import { RootStackParamList, VIEWS } from '../../../App';
+import { RootStackParamList, VIEWS } from '../../Router';
 import { useNavigation } from '@react-navigation/native';
 import IonIcons from 'react-native-vector-icons/Ionicons';
 import AntDesign from 'react-native-vector-icons/AntDesign';

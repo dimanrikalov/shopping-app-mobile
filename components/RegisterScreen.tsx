@@ -1,12 +1,9 @@
-import {
-    signInWithEmailAndPassword,
-    createUserWithEmailAndPassword
-} from 'firebase/auth';
 import { useState } from 'react';
 import { MyText } from './utils/MyText';
 import { Button } from './utils/Button';
-import { auth } from '../firebase/firebase';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from './Router';
+import auth from '@react-native-firebase/auth';
+import { getAuth, updateProfile } from 'firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { ITypes, Input, InputTypes } from './utils/Input';
 import { Pressable, StyleSheet, View } from 'react-native';
@@ -16,39 +13,21 @@ export const RegisterScreen = () => {
     const { navigate } =
         useNavigation<NativeStackNavigationProp<RootStackParamList>>();
     const [error, setError] = useState<string>();
-    const [inputs, setInputs] = useState({
-        email: '',
-        password: ''
-    });
+    const [nameInput, setNameInput] = useState('');
 
-    const submitRegistration = async () => {
-        setError('');
-     
-        if (!inputs.email || !inputs.password) {
-            setError('Both fields are required!');
-            return;
-        }
+    const submitRegistration = () => {
+        auth()
+            .signInAnonymously()
+            .then(async (data) => {
 
-        try {
-            await createUserWithEmailAndPassword(
-                auth,
-                inputs.email,
-                inputs.password
-            );
-            const { user } = await signInWithEmailAndPassword(
-                auth,
-                inputs.email,
-                inputs.password
-            );
-            if (!user) {
-                throw new Error('Registration failed!');
-            }
-            console.log(user);
-            navigate('Home');
-        } catch (err: any) {
-            console.log(err);
-            setError(err.message);
-        }
+                console.log('Anonymouse login succesful.');
+                await data.user.updateProfile({displayName:"test"})
+                console.log("after",data.user);
+                navigate('Home');
+            })
+            .catch((err: any) => {
+                setError(err.message);
+            });
     };
 
     return (
@@ -58,23 +37,11 @@ export const RegisterScreen = () => {
             <View style={styles.inputContainer}>
                 {error && <MyText style={styles.error}>{error}</MyText>}
                 <Input
-                    label={'Email'}
-                    placeholder={'john.doe@gmail.com'}
-                    value={inputs.email}
-                    setInputs={(newValue) =>
-                        setInputs((prev) => ({ ...prev, email: newValue }))
-                    }
-                    elementId={InputTypes.EMAIL_INPUT}
-                    type={ITypes.TEXT}
-                />
-                <Input
-                    label={'Password'}
-                    placeholder={'*********'}
-                    value={inputs.password}
-                    setInputs={(newValue) =>
-                        setInputs((prev) => ({ ...prev, password: newValue }))
-                    }
-                    elementId={InputTypes.PASSWORD_INPUT}
+                    label={'Enter your name:'}
+                    placeholder={'John Doe'}
+                    value={nameInput}
+                    setInputs={(newValue) => setNameInput(newValue)}
+                    elementId={InputTypes.NAME_INPUT}
                     type={ITypes.TEXT}
                 />
                 <Button

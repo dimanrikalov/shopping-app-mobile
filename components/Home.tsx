@@ -1,5 +1,5 @@
 import { StyleSheet } from 'react-native';
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from './Router';
 import { COLLECTIONS } from '../app/productsApi';
 import { ListContainer } from './utils/ListContainer';
 import { SafeAreaView } from 'react-native-safe-area-context';

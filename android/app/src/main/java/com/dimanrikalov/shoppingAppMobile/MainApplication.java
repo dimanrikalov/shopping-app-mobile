@@ -1,4 +1,4 @@
-package com.shoppingappmobile;
+package com.dimanrikalov.shoppingAppMobile;
 
 import android.app.Application;
 import com.facebook.react.PackageList;

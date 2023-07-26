@@ -1,4 +1,4 @@
-import { RootStackParamList } from '../App';
+import { RootStackParamList } from './Router';
 import { View, StyleSheet } from 'react-native';
 import { COLLECTIONS } from '../app/productsApi';
 import { ListContainer } from './utils/ListContainer';
